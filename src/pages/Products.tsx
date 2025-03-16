@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
+import AddProductModal from '@/components/AddProductModal';
 import { supabase } from '@/integrations/supabase/client';
 import { Product } from '@/types/product';
 import { 
@@ -38,16 +38,13 @@ const Products = () => {
     queryFn: fetchProducts,
   });
 
-  // Calculate pagination
   const totalProducts = products?.length || 0;
   const totalPages = Math.ceil(totalProducts / productsPerPage);
   
-  // Get current products
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products?.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -56,9 +53,12 @@ const Products = () => {
       
       <main className="flex-grow pt-28 pb-16">
         <div className="container mx-auto px-4">
-          <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold">Nos Produits</h1>
-            <p className="text-gray-600 mt-2">Découvrez notre sélection de produits de qualité</p>
+          <header className="mb-8 flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold">Nos Produits</h1>
+              <p className="text-gray-600 mt-2">Découvrez notre sélection de produits de qualité</p>
+            </div>
+            <AddProductModal />
           </header>
           
           {isLoading ? (
