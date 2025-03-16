@@ -37,9 +37,10 @@ const AddProductForm = ({ onSuccess }: { onSuccess?: () => void }) => {
 
   const onSubmit = async (data: ProductFormValues) => {
     try {
+      // Important : nous passons data directement au lieu d'un array
       const { error } = await supabase
         .from('products')
-        .insert([data]);
+        .insert(data);
 
       if (error) throw error;
 
