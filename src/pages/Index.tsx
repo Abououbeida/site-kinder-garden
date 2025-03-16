@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
@@ -21,7 +20,7 @@ const Index = () => {
             loop
             poster="https://images.pexels.com/photos/1884584/pexels-photo-1884584.jpeg"
           >
-            <source src="https://player.vimeo.com/external/370467553.sd.mp4?s=372d201ae5f6ef69f8595f06ccc9ca0b231ca5af&profile_id=139&oauth2_token_id=57447761" type="video/mp4" />
+            <source src="https://www.example.com/your-video.mp4" type="video/mp4" />
             Votre navigateur ne supporte pas la lecture vidéo.
           </video>
           
@@ -80,6 +79,25 @@ const Index = () => {
           </div>
         </section>
         
+        {/* Section Vidéo YouTube */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">Notre Vidéo</h2>
+            
+            <div className="flex justify-center">
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/H6EZGMMcquI" // Remplacer par l'ID de votre vidéo YouTube
+                frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="Notre Vidéo"
+              ></iframe>
+            </div>
+          </div>
+        </section>
+
         {/* Section Nouveautés */}
         <section className="py-20">
           <div className="container mx-auto px-4">
