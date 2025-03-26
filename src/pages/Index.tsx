@@ -89,7 +89,7 @@ const Index = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                { id: 1, image: "https://i.imgur.com/DAjgx7n.jpg", title: "Vêtements Enfants", description: "Découvrez notre collection tendance pour les petits." },
+                { id: 1, image: "https://i.postimg.cc/y8N12BBF/robe.jpg", title: "Vêtements Enfants", description: "Découvrez notre collection tendance pour les petits." },
                 { id: 2, image: "https://i.postimg.cc/VN4xj02M/Melhfa-Chega-032-C.jpg", title: "Melehfas de Qualité", description: "Des tissus raffinés pour un confort et une élégance assurés." },
                 { id: 3, image: "https://i.postimg.cc/qR3Gp9cR/9hz9a3mn.png", title: "Produits Cosmétiques", description: "Prenez soin de vous avec notre gamme haut de gamme." }
               ].map((item) => (
