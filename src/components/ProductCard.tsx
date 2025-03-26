@@ -19,7 +19,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     📸 *Image du produit:*  
     ${product.image}`; // Ici, on inclut uniquement le lien de l'image
 
-    const whatsappUrl = `https://wa.me/22247150562?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/22234346758?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, '_blank');
   };

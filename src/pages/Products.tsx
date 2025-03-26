@@ -65,8 +65,8 @@ const Products = () => {
   const categories = [
     { id: null, label: "Tous" },
     { id: 1, label: "Enfants" },
-    { id: 2, label: "Cosmétiques" },
-    { id: 3, label: "Femmes" },
+    { id: 3, label: "Cosmétiques" },
+    { id: 2, label: "Femmes" },
   ];
 
   return (
