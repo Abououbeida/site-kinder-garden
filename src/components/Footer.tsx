@@ -11,7 +11,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center space-x-2 mb-4">
               <ShoppingBag className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold">ShopModerne</span>
+              <span className="text-xl font-bold">HD-STYLE</span>
             </Link>
             <p className="text-gray-600 mb-4">
               Votre boutique en ligne pour des produits de qualité et tendance.

@@ -10,7 +10,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
             <ShoppingBag className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold">ShopModerne</span>
+            <span className="text-xl font-bold">HD-STYLE </span>
           </Link>
           
           <div className="hidden md:flex space-x-8">
