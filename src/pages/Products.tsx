@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -9,7 +9,7 @@ import {
   Pagination, 
   PaginationContent, 
   PaginationItem, 
-  PaginationLink,
+  PaginationLink, 
   PaginationNext, 
   PaginationPrevious 
 } from '@/components/ui/pagination';
@@ -20,53 +20,43 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const productsPerPage = 8;
 
-  // Fonction pour récupérer les produits
-  const fetchProducts = async () => {
-    console.log("Catégorie sélectionnée :", selectedCategory);
-
-    let query = supabase.from('products').select('*').order('name');
+  const fetchProducts = useCallback(async () => {
+    let query = supabase
+      .from('products')
+      .select('*')
+      .order('name')
+      .range((currentPage - 1) * productsPerPage, currentPage * productsPerPage - 1);
 
     if (selectedCategory !== null) {
       query = query.eq('category', selectedCategory);
     }
 
     const { data, error } = await query;
-
     if (error) {
       console.error("Erreur Supabase:", error.message);
       throw new Error(error.message);
     }
-    
-    return data as Product[];
-  };
 
-  // Utilisation de useQuery pour charger les produits
+    return data as Product[];
+  }, [selectedCategory, currentPage]);
+
   const { data: products, isLoading, error, refetch } = useQuery({
-    queryKey: ['products', selectedCategory], // Actualise selon la catégorie
+    queryKey: ['products', selectedCategory, currentPage],
     queryFn: fetchProducts,
   });
 
-  // Mettre à jour les produits à chaque changement de catégorie
   useEffect(() => {
-    setCurrentPage(1); // Reset pagination
+    setCurrentPage(1);
     refetch();
   }, [selectedCategory, refetch]);
 
-  // Pagination
-  const totalProducts = products?.length || 0;
-  const totalPages = Math.ceil(totalProducts / productsPerPage);
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products?.slice(indexOfFirstProduct, indexOfLastProduct);
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // Liste des catégories disponibles
   const categories = [
     { id: null, label: "Tous" },
     { id: 1, label: "Enfants" },
-    { id: 3, label: "Cosmétiques" },
-    { id: 2, label: "Femmes" },
+    { id: 2, label: "Cosmétiques" },
+    { id: 3, label: "Femmes" },
   ];
 
   return (
@@ -80,19 +70,24 @@ const Products = () => {
             <p className="text-gray-600 mt-2">Découvrez notre sélection de produits de qualité</p>
           </header>
 
-          {/* Filtres par catégorie */}
-          <div className="mb-6 flex space-x-4">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                className={`px-4 py-2 border rounded transition ${
-                  selectedCategory === cat.id ? "bg-blue-500 text-white" : "bg-gray-200"
-                }`}
-                onClick={() => setSelectedCategory(cat.id)}
-              >
-                {cat.label}
-              </button>
-            ))}
+          {/* Filtres - Liste verticale */}
+          <div className="mb-6 flex flex-col w-64 border rounded-lg p-2 bg-gray-50">
+            <h2 className="text-lg font-semibold p-2 border-b">Catégories</h2>
+            <ul className="space-y-2">
+              {categories.map((cat) => (
+                <li
+                  key={cat.id}
+                  className={`p-3 border rounded-md cursor-pointer transition duration-300 ${
+                    selectedCategory === cat.id 
+                      ? "bg-blue-600 text-white border-blue-600"
+                      : "bg-white hover:bg-gray-200"
+                  }`}
+                  onClick={() => setSelectedCategory(cat.id)}
+                >
+                  {cat.label}
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Affichage des produits */}
@@ -109,42 +104,38 @@ const Products = () => {
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {currentProducts?.map((product) => (
+                {products?.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
 
               {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-12">
-                  <Pagination>
-                    <PaginationContent>
-                      {currentPage > 1 && (
-                        <PaginationItem>
-                          <PaginationPrevious onClick={() => paginate(currentPage - 1)} />
-                        </PaginationItem>
-                      )}
+              <div className="mt-12">
+                <Pagination>
+                  <PaginationContent>
+                    {currentPage > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious onClick={() => paginate(currentPage - 1)} />
+                      </PaginationItem>
+                    )}
 
-                      {Array.from({ length: totalPages }).map((_, index) => (
-                        <PaginationItem key={index}>
-                          <PaginationLink
-                            isActive={currentPage === index + 1}
-                            onClick={() => paginate(index + 1)}
-                          >
-                            {index + 1}
-                          </PaginationLink>
-                        </PaginationItem>
-                      ))}
+                    {[...Array(5)].map((_, index) => (
+                      <PaginationItem key={index}>
+                        <PaginationLink
+                          isActive={currentPage === index + 1}
+                          onClick={() => paginate(index + 1)}
+                        >
+                          {index + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
 
-                      {currentPage < totalPages && (
-                        <PaginationItem>
-                          <PaginationNext onClick={() => paginate(currentPage + 1)} />
-                        </PaginationItem>
-                      )}
-                    </PaginationContent>
-                  </Pagination>
-                </div>
-              )}
+                    <PaginationItem>
+                      <PaginationNext onClick={() => paginate(currentPage + 1)} />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
             </>
           )}
         </div>
