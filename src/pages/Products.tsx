@@ -13,11 +13,12 @@ import {
   PaginationNext, 
   PaginationPrevious 
 } from '@/components/ui/pagination';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Menu, X } from 'lucide-react';
 
 const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const productsPerPage = 8;
 
   const fetchProducts = useCallback(async () => {
@@ -55,8 +56,8 @@ const Products = () => {
   const categories = [
     { id: null, label: "Tous" },
     { id: 1, label: "Enfants" },
-    { id: 2, label: "Cosmétiques" },
-    { id: 3, label: "Femmes" },
+    { id: 3, label: "Cosmétiques" },
+    { id: 2, label: "Femmes" },
   ];
 
   return (
@@ -70,24 +71,40 @@ const Products = () => {
             <p className="text-gray-600 mt-2">Découvrez notre sélection de produits de qualité</p>
           </header>
 
-          {/* Filtres - Liste verticale */}
-          <div className="mb-6 flex flex-col w-64 border rounded-lg p-2 bg-gray-50">
-            <h2 className="text-lg font-semibold p-2 border-b">Catégories</h2>
-            <ul className="space-y-2">
-              {categories.map((cat) => (
-                <li
-                  key={cat.id}
-                  className={`p-3 border rounded-md cursor-pointer transition duration-300 ${
-                    selectedCategory === cat.id 
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-white hover:bg-gray-200"
-                  }`}
-                  onClick={() => setSelectedCategory(cat.id)}
-                >
-                  {cat.label}
-                </li>
-              ))}
-            </ul>
+          {/* Filtres avec menu caché */}
+          <div className="relative mb-6 w-64">
+            {/* Bouton pour afficher les catégories */}
+            <button
+              className="w-full p-3 border rounded-lg bg-gray-50 flex justify-between items-center"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <span className="text-lg font-semibold">Catégories</span>
+              {isMenuOpen ? <X /> : <Menu />}
+            </button>
+
+            {/* Liste des catégories (cachée par défaut) */}
+            {isMenuOpen && (
+              <div className="absolute top-full left-0 w-full mt-2 border rounded-lg bg-white shadow-lg z-10">
+                <ul className="space-y-2 p-2">
+                  {categories.map((cat) => (
+                    <li
+                      key={cat.id}
+                      className={`p-3 rounded-md cursor-pointer transition duration-300 ${
+                        selectedCategory === cat.id
+                          ? "bg-black text-white"
+                          : "hover:bg-gray-200"
+                      }`}
+                      onClick={() => {
+                        setSelectedCategory(cat.id);
+                        setIsMenuOpen(false); // Fermer après sélection
+                      }}
+                    >
+                      {cat.label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           {/* Affichage des produits */}
