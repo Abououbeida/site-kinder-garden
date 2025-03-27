@@ -59,7 +59,7 @@ const Contact = () => {
                   <MapPin className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" />
                   <div>
                     <h3 className="font-medium">Adresse</h3>
-                    <p className="text-gray-600">123 Rue du Commerce, 75001 Paris, France</p>
+                    <p className="text-gray-600">426C+89P Nouakchott, Mauritania</p>
                   </div>
                 </div>
                 
@@ -75,7 +75,7 @@ const Contact = () => {
                   <Mail className="h-5 w-5 text-primary mt-1 mr-3 flex-shrink-0" />
                   <div>
                     <h3 className="font-medium">Email</h3>
-                    <p className="text-gray-600">contact@shopmoderne.com</p>
+                    <p className="text-gray-600">contact.hdstyle@gmail.com</p>
                   </div>
                 </div>
               </div>
